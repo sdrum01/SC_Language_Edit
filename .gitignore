@@ -1,0 +1,10 @@
+*.xlsx
+*.xls
+*.csv
+*.exe
+*.dcu
+*.~pas
+*.~dfm
+*.cfg
+*.ssa
+*.tmp
