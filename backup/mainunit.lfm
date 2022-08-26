@@ -22,7 +22,7 @@ object Form1: TForm1
     Text = 'choose sourcefile'
   end
   object StringGrid1: TStringGrid
-    Left = 8
+    Left = 0
     Height = 696
     Top = 48
     Width = 1272

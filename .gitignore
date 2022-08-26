@@ -1,10 +1,12 @@
 *.xlsx
 *.xls
-*.csv
 *.exe
 *.dcu
 *.~pas
 *.~dfm
 *.cfg
-*.ssa
 *.tmp
+*.o
+*.ppu
+*.compiled
+*.or
