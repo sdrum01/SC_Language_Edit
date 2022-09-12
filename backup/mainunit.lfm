@@ -5,8 +5,9 @@ object Form1: TForm1
   Width = 1285
   AllowDropFiles = True
   Caption = 'SafeControl Language Translation Helper'
-  ClientHeight = 754
+  ClientHeight = 734
   ClientWidth = 1285
+  Menu = MainMenu1
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
   OnResize = FormResize
@@ -22,7 +23,7 @@ object Form1: TForm1
     Text = 'choose sourcefile'
   end
   object StringGrid1: TStringGrid
-    Left = 0
+    Left = 8
     Height = 696
     Top = 48
     Width = 1272
@@ -129,10 +130,10 @@ object Form1: TForm1
     TabOrder = 6
   end
   object Label_wait: TStaticText
-    Left = 0
+    Left = 16
     Height = 87
     Top = 72
-    Width = 1265
+    Width = 1249
     Alignment = taCenter
     Caption = 'Please Wait...'
     Color = clNone
@@ -171,11 +172,38 @@ object Form1: TForm1
     ParentColor = False
   end
   object OpenDialog1: TOpenDialog
-    Left = 536
-    Top = 80
+    Left = 267
+    Top = 216
   end
   object SaveDialog1: TSaveDialog
-    Left = 536
-    Top = 152
+    Left = 267
+    Top = 272
+  end
+  object MainMenu1: TMainMenu
+    Left = 267
+    Top = 163
+    object MenuFile: TMenuItem
+      Caption = 'File'
+      object MenuFile_OpenSrc: TMenuItem
+        Caption = 'Open Sourcefile'
+        OnClick = MenuFile_OpenSrcClick
+      end
+      object MenuFile_OpenDst: TMenuItem
+        Caption = 'Open Destinationfile'
+        OnClick = MenuFile_OpenDstClick
+      end
+      object MenuFile_SaveDst: TMenuItem
+        Caption = 'Save Destination'
+        OnClick = MenuFile_SaveDstClick
+      end
+      object MenuFile_ExportSrc: TMenuItem
+        Caption = 'Export Sourcefile to CSV'
+        OnClick = MenuFile_ExportSrcClick
+      end
+      object MenuFile_ImportCsv: TMenuItem
+        Caption = 'Import CSV to Destination'
+        OnClick = MenuFile_ImportCsvClick
+      end
+    end
   end
 end
