@@ -31,6 +31,8 @@ type
     MenuFile_SaveDst: TMenuItem;
     MenuFile_ExportSrc: TMenuItem;
     MenuFile_ImportCsv: TMenuItem;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
     OpenDialog1: TOpenDialog;
     Label_wait: TStaticText;
     SaveDialog1: TSaveDialog;

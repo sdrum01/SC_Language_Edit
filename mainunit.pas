@@ -770,7 +770,7 @@ end;
 
 procedure TForm1.B_helpClick(Sender: TObject);
 begin
-  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2016 (D.H.)');
+  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2022 (D.H.)');
 end;
 
 procedure TForm1.CB_emptyChange(Sender: TObject);
