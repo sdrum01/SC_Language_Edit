@@ -10,3 +10,6 @@
 *.ppu
 *.compiled
 *.or
+
+/release
+

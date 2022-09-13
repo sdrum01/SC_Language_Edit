@@ -35,6 +35,9 @@ Die Funktion "Search" blendet nur die Zeilen ein, wo der gesuchte Wert im Suchfe
 Mit Save wird eine Kopie der Zieldatei erstellt im Muster language_new.xxx.
 Die Datei wird im Format der zu übersetzenden Datei gespeichert (das UTF-8 oder ANSI Format wird übernommen).
 
+Es gibt die Möglichkeit, eine CSV aus der Queldatei zu exportieren mit Menu "File > Export Sourcefile to CSV" und 
+eine übersetzte CSV Datei im selben Format zu importieren mit Menu "File > Import CSV to Destination"
+
 ##########################################################################################
 
 English:
@@ -63,9 +66,14 @@ The Input Field "search" is searching for the value case-insensitiv. All found l
 "Save" generated a new file with Structure language_new.xxx.
 The Format of the Textfile (UTF-8 or ANSI) is the same like the destination file.
 
+Its possible to Export the Sourcefile as CSV File via Menu "File > Export Sourcefile to CSV"
+Its possible to Import a translated CSV File in teh same Format like the export CSV via Menu "File > Import CSV to Destination"
+
 
 ################ HISTORY ###############
 V1.0.1.2
-Erstes Release
+First Release
 V 1.0.2.1
-Drag'n'Drop von FIles möglich aus einem Dateimanager
+Drag'n'Drop possible of files from filemanager
+V1.2.1.0  13/09/22
+possible to Export and Import translated files from/to CSV, small cleanup and bugfixes
