@@ -17,8 +17,8 @@
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="2"/>
-      <BuildNr Value="1"/>
-      <StringTable CompanyName="Gunnebo Markersdorf" FileDescription="Merge Tool for Safecontrol Language Files" InternalName="SC_language_edit" LegalCopyright="Dirk Hanisch Gunnebo 2016" LegalTrademarks="Gunnebo 2016 DH" OriginalFilename="SC_language_edit" ProductVersion="0.1"/>
+      <RevisionNr Value="1"/>
+      <StringTable CompanyName="Gunnebo Markersdorf" FileDescription="Merge Tool for Safecontrol Language Files" InternalName="SC_language_edit" LegalCopyright="Dirk Hanisch Gunnebo 2016" LegalTrademarks="Gunnebo 2016 DH" OriginalFilename="SC_language_edit" ProductVersion="1.2.1"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
@@ -45,7 +45,7 @@
       <Unit1>
         <Filename Value="mainunit.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form1"/>
+        <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainUnit"/>

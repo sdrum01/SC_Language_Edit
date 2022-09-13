@@ -6,24 +6,22 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, Grids, Menus, types;
+  StdCtrls, Grids, Menus, Buttons, types;
 
 type
 
-  { TForm1 }
+  { TMainForm }
 
-  TForm1 = class(TForm)
-    B_help: TButton;
-    Button_merge: TButton;
-    Button3: TButton;
-    Button_save: TButton;
+  TMainForm = class(TForm)
+    b_merge: TBitBtn;
+    b_save: TBitBtn;
+    b_search: TBitBtn;
     CB_empty: TCheckBox;
     Edit_search: TEdit;
     Edit_src: TEdit;
     Edit_dst: TEdit;
     Label1: TLabel;
     Label2: TLabel;
-    Label3: TLabel;
     MainMenu1: TMainMenu;
     MenuFile: TMenuItem;
     MenuFile_OpenSrc: TMenuItem;
@@ -33,15 +31,20 @@ type
     MenuFile_ImportCsv: TMenuItem;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuHelp_about: TMenuItem;
     OpenDialog1: TOpenDialog;
     Label_wait: TStaticText;
     SaveDialog1: TSaveDialog;
     StringGrid1: TStringGrid;
-    procedure Button_mergeClick(Sender: TObject);
+
     procedure Button3Click(Sender: TObject);
 
     procedure Button_saveClick(Sender: TObject);
     procedure B_helpClick(Sender: TObject);
+    procedure b_mergeClick(Sender: TObject);
+    procedure b_saveClick(Sender: TObject);
+    procedure b_searchClick(Sender: TObject);
     procedure CB_emptyChange(Sender: TObject);
     //procedure Edit_dstChange(Sender: TObject);
 
@@ -59,6 +62,7 @@ type
     procedure load_destination(filename: string);
     procedure MenuFile_ExportSrcClick(Sender: TObject);
     procedure MenuFile_ImportCsvClick(Sender: TObject);
+    procedure MenuHelp_aboutClick(Sender: TObject);
 
 
     procedure saveDestination();
@@ -102,8 +106,9 @@ type
 
 
 var
-  Form1: TForm1;
-  key_languagefile_dst : string;
+  MainForm: TMainForm;
+  key_languagefile_dst, lastExportFileName : string;
+
   //arr_lines : array of integer;
 
 
@@ -127,10 +132,10 @@ uses
  VAR     Stream: TResourceStream;
          vr: TVersionResource;
          fi: TVersionFixedInfo;
-         eol : string;
+         // eol : string;
  BEGIN
    RESULT:= '';
-   eol := '';
+   // eol := '';
    TRY
 
  (* This raises an exception if version info has not been incorporated into the  *)
@@ -208,10 +213,10 @@ begin
 end;
 
 
-{ TForm1 }
+{ TMainForm }
 
 
-procedure TForm1.load_source(filename: string);
+procedure TMainForm.load_source(filename: string);
 var
   //dst:TIniFile;
   F1: TextFile;
@@ -283,6 +288,7 @@ begin
         ShowMessage(E.Message);
     end;
   StringGrid1.EndUpdate(true);
+  b_save.Enabled := true;
   end
   else
     begin
@@ -296,10 +302,10 @@ begin
 end;
 
 
-procedure TForm1.load_destination(filename: string);
+procedure TMainForm.load_destination(filename: string);
 var
   F1: TextFile;
-  s, actual_key, subkey, value, key_src, subkey_src, value_src: string;
+  s, actual_key, subkey, value, key_src, subkey_src: string; // , value_src
   row: TStringList;
   i,i1: integer;
 begin
@@ -346,7 +352,7 @@ begin
 
                 key_src := StringGrid1.Cells[0,i1];
                 subkey_src := StringGrid1.Cells[1,i1];
-                value_src := StringGrid1.Cells[2,i1];
+                //value_src := StringGrid1.Cells[2,i1];
 
                 if ((key_src = actual_key) and (subkey_src = subkey))then
                 begin
@@ -359,7 +365,7 @@ begin
 
       end;
       CloseFile(F1);
-      Button_save.Enabled := true;
+      b_save.Enabled := true;
     except
       on E: Exception do
         ShowMessage(E.Message);
@@ -375,34 +381,39 @@ begin
   label_wait.Visible:= false;
 end;
 
-procedure TForm1.MenuFile_ExportSrcClick(Sender: TObject);
+procedure TMainForm.MenuFile_ExportSrcClick(Sender: TObject);
 begin
   exportSource();
 end;
 
-procedure TForm1.MenuFile_ImportCsvClick(Sender: TObject);
+procedure TMainForm.MenuFile_ImportCsvClick(Sender: TObject);
 begin
   importCSV();
 end;
 
-procedure TForm1.MenuFile_SaveDstClick(Sender: TObject);
+procedure TMainForm.MenuHelp_aboutClick(Sender: TObject);
+begin
+  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2022 (D.H.)');
+end;
+
+procedure TMainForm.MenuFile_SaveDstClick(Sender: TObject);
 begin
   saveDestination();
 end;
 
 
-procedure TForm1.MenuFile_OpenDstClick(Sender: TObject);
+procedure TMainForm.MenuFile_OpenDstClick(Sender: TObject);
 begin
   chooseDestination();
 end;
 
 
-procedure TForm1.MenuFile_OpenSrcClick(Sender: TObject);
+procedure TMainForm.MenuFile_OpenSrcClick(Sender: TObject);
 begin
   chooseSource();
 end;
 
-procedure TForm1.merge;
+procedure TMainForm.merge;
 var
   value_src, value_dst: string;
   i1: integer;
@@ -421,11 +432,12 @@ begin
     end;
   StringGrid1.EndUpdate(true);
   label_wait.Visible:= false;
+  b_save.enabled := true;
 end;
 
 
 
-procedure TForm1.StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
+procedure TMainForm.StringGrid1DrawCell(Sender: TObject; aCol, aRow: Integer;
   aRect: TRect; aState: TGridDrawState);
 var
   value_src, value_dst: string;
@@ -463,7 +475,7 @@ begin
 
 end;
 
-procedure TForm1.exportFile(FileName:string);
+procedure TMainForm.exportFile(FileName:string);
 var i1 : integer;
   key, key_bak, subkey, value : string;
   F1:textfile;
@@ -510,7 +522,7 @@ begin
 
     end;
     CloseFile(F1);
-    ShowMessage('Export File saved as '+ FileName);
+    // ShowMessage('Export File saved as '+ FileName);
   except
     on E: Exception do ShowMessage(E.Message);
   end;
@@ -524,7 +536,7 @@ end;
 // ID;Text;Context
 // KEY_subkey;myvalue;KEY
 
-procedure TForm1.sourceToCsv(FileName:string);
+procedure TMainForm.sourceToCsv(FileName:string);
 var i1 : integer;
   key, subkey, value : string;
   F1:textfile;
@@ -577,11 +589,11 @@ end;
 
 // Import entries in translated Destination CSV into the Dest.Stringlist
 
-procedure TForm1.csvToDestination(FileName:string);
+procedure TMainForm.csvToDestination(FileName:string);
 var
   F1: TextFile;
   //csvList: TStringList;
-  s, subkey, value, key_src, subkey_src, value_src, csvID, csvText, csvKey, csvSubkey: string;
+  s, value, key_src, subkey_src, csvID, csvText, csvKey, csvSubkey: string; //value_src,
   row: TStringList;
   i,i1: integer;
 begin
@@ -628,7 +640,7 @@ begin
 
                     key_src := StringGrid1.Cells[0,i1];
                     subkey_src := StringGrid1.Cells[1,i1];
-                    value_src := StringGrid1.Cells[2,i1];
+                    // value_src := StringGrid1.Cells[2,i1];
 
                     if ((key_src = csvKey) and (subkey_src = csvSubkey))then
                     begin
@@ -655,7 +667,7 @@ begin
 
       end;
       CloseFile(F1);
-      Button_save.Enabled := true;
+      b_save.Enabled := true;
     except
       on E: Exception do
         ShowMessage(E.Message);
@@ -673,14 +685,7 @@ end;
 
 
 
-
-procedure TForm1.Button_mergeClick(Sender: TObject);
-begin
-  merge;
-end;
-
-
-procedure TForm1.Clear_translation;
+procedure TMainForm.Clear_translation;
 var i1 : integer;
 begin
    for i1 := 1 to StringGrid1.RowCount-1 do
@@ -689,15 +694,17 @@ begin
    end;
 end;
 
-procedure TForm1.Clear_all;
+procedure TMainForm.Clear_all;
 
 begin
    StringGrid1.RowCount:= 1;
 end;
 
 // Choose Destinationfile per Savedialog
-procedure TForm1.saveDestination();
+procedure TMainForm.saveDestination();
+var exportPossible : boolean;
 begin
+  exportPossible := false;
   If (FileExists(Edit_dst.Text)) then
   begin
     {
@@ -713,22 +720,46 @@ begin
     }
     SaveDialog1.InitialDir := ExtractFilePath(Edit_dst.Text);
     SaveDialog1.FileName := ChangeFileExt(ExtractFileName(Edit_dst.Text), '')+'_translated'+ExtractFileExt(Edit_dst.Text);
+    exportPossible := true;
+  end else
+  if (FileExists(Edit_src.Text)) then
+  begin
+    SaveDialog1.InitialDir := ExtractFilePath(Edit_src.Text);
+    SaveDialog1.FileName := ChangeFileExt(ExtractFileName(Edit_src.Text), '')+'_translated'+ExtractFileExt(Edit_src.Text);
+    exportPossible := true;
+  end else ShowMessage('Please select a valid Sourcefile!');
+
+  if exportPossible then
+  begin
+    if lastExportFileName <> '' then
+    begin
+      SaveDialog1.InitialDir := ExtractFilePath(lastExportFileName);
+      SaveDialog1.FileName := ExtractFileName(lastExportFileName);
+    end;
     if SaveDialog1.Execute then
     begin
       if(fileExists(SaveDialog1.FileName))then
       begin
         if MessageDlg('File already exists:' + SaveDialog1.FileName + ' Overwrite?',
-        mtConfirmation, [mbNo, mbYes], 0) = mrYes then ExportFile(SaveDialog1.FileName);
+        mtConfirmation, [mbNo, mbYes], 0) = mrYes then
+        begin
+          ExportFile(SaveDialog1.FileName);
+          lastExportFileName := SaveDialog1.FileName;
+        end;
+
       end else
       begin
         ExportFile(SaveDialog1.FileName);
+        lastExportFileName := SaveDialog1.FileName;
       end;
     end;
   end;
+
+
 end;
 
 // Choose CSV-Exportfile per SafeDialog
-procedure TForm1.exportSource();
+procedure TMainForm.exportSource();
 begin
   If (FileExists(Edit_src.Text)) then
   begin
@@ -745,45 +776,57 @@ begin
         sourceToCSV(SaveDialog1.FileName);
       end;
     end;
-  end;
+  end else ShowMessage('Please select a valid Sourcefile!');
 end;
 
 // Choose CSV-Exportfile per SafeDialog
-procedure TForm1.importCSV();
+procedure TMainForm.importCSV();
 begin
   If (FileExists(Edit_src.Text)) then
   begin
     //OpenDialog1.InitialDir := ExtractFilePath(Edit_src.Text);
-    OpenDialog1.DefaultExt:= 'csv';
+    //OpenDialog1.DefaultExt:= 'csv';
+    OpenDialog1.Filter := 'CSV files|*.csv|all files|*.*';
     if OpenDialog1.Execute then
     begin
        csvToDestination(OpenDialog1.FileName);
     end;
-  end;
+  end else ShowMessage('Please select a valid Sourcefile!');
 end;
 
 
-procedure TForm1.Button_saveClick(Sender: TObject);
+procedure TMainForm.Button_saveClick(Sender: TObject);
 begin
-  saveDestination();
+
 end;
 
-procedure TForm1.B_helpClick(Sender: TObject);
+procedure TMainForm.B_helpClick(Sender: TObject);
 begin
   ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2022 (D.H.)');
 end;
 
-procedure TForm1.CB_emptyChange(Sender: TObject);
+procedure TMainForm.b_mergeClick(Sender: TObject);
+begin
+  merge;
+end;
+
+procedure TMainForm.b_saveClick(Sender: TObject);
+begin
+  saveDestination();
+end;
+
+procedure TMainForm.b_searchClick(Sender: TObject);
+begin
+  search_in_list(Edit_Search.Text);
+end;
+
+procedure TMainForm.CB_emptyChange(Sender: TObject);
 begin
   filter;
 end;
 
 
-
-
-
-
-procedure TForm1.filter;
+procedure TMainForm.filter;
 var i1 :integer;
 begin
   Label_wait.Visible:= true;
@@ -821,13 +864,13 @@ begin
   Label_wait.Visible:= false;
 end;
 
-procedure TForm1.StringGrid1EndDrag(Sender, Target: TObject; X, Y: Integer);
+procedure TMainForm.StringGrid1EndDrag(Sender, Target: TObject; X, Y: Integer);
 begin
 
 end;
 
 
-procedure TForm1.StringGrid1KeyPress(Sender: TObject; var Key: char);
+procedure TMainForm.StringGrid1KeyPress(Sender: TObject; var Key: char);
 begin
   {
   If (char(Key) = #13) and (StringGrid1.Selection.Left = 3) then
@@ -851,7 +894,7 @@ begin
 end;
 
 
-procedure TForm1.StringGrid1MouseWheel(Sender: TObject; Shift: TShiftState;
+procedure TMainForm.StringGrid1MouseWheel(Sender: TObject; Shift: TShiftState;
   WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
 begin
 
@@ -868,32 +911,33 @@ begin
 end;
 
 
-procedure TForm1.Edit_srcClick(Sender: TObject);
+procedure TMainForm.Edit_srcClick(Sender: TObject);
 begin
   chooseSource();
 end;
 
 
 
-procedure TForm1.chooseSource();
+procedure TMainForm.chooseSource();
 begin
  Label_wait.Visible:= true;
   Application.ProcessMessages;
+  OpenDialog1.Filter := 'Safecontrol-language files|*.lng|all files|*.*';
   If OpenDialog1.Execute then
   begin
     Edit_src.Text:= OpenDialog1.FileName;
     load_source(Edit_src.Text);
   end;
   Label_wait.Visible:= false;
-
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TMainForm.FormCreate(Sender: TObject);
 begin
   key_languagefile_dst := '';
+  lastExportFileName := '';
 end;
 
-procedure TForm1.FormDropFiles(Sender: TObject; const FileNames: array of String
+procedure TMainForm.FormDropFiles(Sender: TObject; const FileNames: array of String
   );
 //var
   //intI: integer = 0;
@@ -921,21 +965,30 @@ begin
   end;
 end;
 
-procedure TForm1.FormResize(Sender: TObject);
+procedure TMainForm.FormResize(Sender: TObject);
+var colWidth:integer;
 begin
-  StringGrid1.Height:= Form1.Height - 55;
-  StringGrid1.Width:= Form1.width - 15;
+  StringGrid1.Height:= MainForm.Height - 55;
+  StringGrid1.Width:= MainForm.width - 15;
+  colWidth := trunc( (StringGrid1.width - StringGrid1.ColWidths[0] - StringGrid1.ColWidths[1] - StringGrid1.ColWidths[4] ) / 2);
+  StringGrid1.ColWidths[2] := colWidth;
+  StringGrid1.ColWidths[3] := colWidth;
+  //StringGrid1.ColWidths[1] := MainForm.width / 4 ;
+  //StringGrid1.ColWidths[2] := MainForm.width / 4 ;
+  //StringGrid1.ColWidths[3] := MainForm.width / 4 ;
 end;
 
-procedure TForm1.Edit_dstClick(Sender: TObject);
+procedure TMainForm.Edit_dstClick(Sender: TObject);
 begin
   chooseDestination();
 end;
 
-procedure TForm1.chooseDestination();
+procedure TMainForm.chooseDestination();
 begin
   Label_wait.Visible:= true;
   Application.ProcessMessages;
+  OpenDialog1.Filter:= 'Safecontrol-language files|*.lng|all files|*.*';
+
   If OpenDialog1.Execute then
   begin
     Edit_dst.Text:= OpenDialog1.FileName;
@@ -945,7 +998,7 @@ begin
 
 end;
 
-procedure TForm1.Edit_searchKeyPress(Sender: TObject; var Key: char);
+procedure TMainForm.Edit_searchKeyPress(Sender: TObject; var Key: char);
 begin
   If Key = #13 then
     begin
@@ -955,12 +1008,12 @@ end;
 
 
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TMainForm.Button3Click(Sender: TObject);
 begin
-  search_in_list(Edit_Search.Text);
+
 end;
 
-procedure TForm1.search_in_list(s : string);
+procedure TMainForm.search_in_list(s : string);
 var i1 : integer;
   key, subkey, val1, val2: string;
 begin
