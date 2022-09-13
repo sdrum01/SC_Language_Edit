@@ -1,12 +1,12 @@
 # SCLanguageEdit
 Helper for Translation Safecontrol Files
 
-##########################################################################################
-################  Translation Helper for Safecontrol Language Files  #####################
-################                                                     #####################
-################  Dirk Hanisch  * Gunnebo Markersdorf                #####################
-################  11:28 08.03.2016                                   #####################
-##########################################################################################
+#########################################################
+##  Translation Helper for Safecontrol Language Files  ##
+##                                                     ##
+##  Dirk Hanisch  * Gunnebo Markersdorf                ##
+##  11:28 08.03.2016                                   ##
+#########################################################
 
 Deutsch:
 
@@ -76,7 +76,10 @@ Its possible to Import a translated CSV File in teh same Format like the export 
 ################ HISTORY ###############
 V1.0.1.2
 First Release
+
 V 1.0.2.1
 Drag'n'Drop possible of files from filemanager
+
 V1.2.1.0  13/09/22
-possible to Export and Import translated files from/to CSV, small cleanup and bugfixes
+possible to Export and Import translated files from/to CSV, 
+small cleanup and bugfixes
