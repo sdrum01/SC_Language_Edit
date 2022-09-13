@@ -74,6 +74,7 @@ Its possible to Import a translated CSV File in teh same Format like the export 
 
 
 ################ HISTORY ###############
+
 V1.0.1.2
 First Release
 
