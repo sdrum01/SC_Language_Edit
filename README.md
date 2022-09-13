@@ -4,7 +4,7 @@ Helper for Translation Safecontrol Files
 #########################################################
 ##  Translation Helper for Safecontrol Language Files  ##
 ##                                                     ##
-##  Dirk Hanisch  * Gunnebo Markersdorf                ##
+##                  Gunnebo Markersdorf                ##
 ##  11:28 08.03.2016                                   ##
 #########################################################
 
