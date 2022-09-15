@@ -3,6 +3,7 @@
 *.csv
 *.lng
 *.exe
+*.log
 *.dcu
 *.~pas
 *.~dfm

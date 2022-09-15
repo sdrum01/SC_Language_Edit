@@ -40,7 +40,6 @@ type
 
     procedure Button3Click(Sender: TObject);
 
-    procedure Button_saveClick(Sender: TObject);
     procedure B_helpClick(Sender: TObject);
     procedure b_mergeClick(Sender: TObject);
     procedure b_saveClick(Sender: TObject);
@@ -64,6 +63,7 @@ type
     procedure MenuFile_ImportCsvClick(Sender: TObject);
     procedure MenuHelp_aboutClick(Sender: TObject);
 
+    procedure log(s:string);
 
     procedure saveDestination();
 
@@ -115,8 +115,6 @@ var
 
 
 implementation
-
-//uses PRG_info;
 
 {$R *.lfm}
 
@@ -204,16 +202,54 @@ begin
         ListOfStrings.Add(trim(s_temp));
         s_temp := '';
       end;
-
-
-
     end;
   end;
   Result := ListOfStrings;
 end;
 
+Procedure WriteLog(s, LogFile : String);
+Var
+F1 : TextFile;
+begin
+ DateSeparator := '.';
+ ShortDateFormat := 'dd/mm/yy';
+ ShortTimeFormat := 'hh/mm/ss';
+ //LogFile := Log;
+ If Not FileExists(LogFile) then
+ begin
+  try
+   AssignFile(F1,LogFile);
+   ReWrite(F1);
+   WriteLn(F1,DateToStr(now)+'-'+TimeToStr(now)+';'+ #$9 + s);
+   CloseFile(F1);
+  finally
+   //CloseFile(F1);
+  end;
+ end else
+ begin
+   try
+        AssignFile(F1,LogFile);
+        Append(F1);
+
+        WriteLn(F1,DateToStr(now)+'-'+TimeToStr(now)+';'+ #$9 + s);
+        CloseFile(F1);
+   except
+     on E:Exception do ShowMessage(E.Message);
+   end
+ end;
+end;
 
 { TMainForm }
+
+// common log call
+procedure TMainForm.log(s:string);
+var s1, logfilename : string;
+begin
+  //inc(act_linenr);
+  s1 := FormatDateTime('hh:mm:ss z',now)+ #9 + s;
+  logfilename := extractFilePath(Application.ExeName)+'SC_language_edit_'+FormatDateTime('YYYY-MM-DD',now)+'.log';
+  WriteLog(s,logfilename);
+end;
 
 
 procedure TMainForm.load_source(filename: string);
@@ -237,8 +273,9 @@ begin
   row := TStringList.Create;
   i := 0;
   i1 := 0;
-  if FileExists(filename) then
 
+  log('start loading Sourcefile: ' + filename);
+  if FileExists(filename) then
   begin
     StringGrid1.BeginUpdate;
     try
@@ -283,9 +320,13 @@ begin
 
       end;
       CloseFile(F1);
+      log('load source successful');
     except
       on E: Exception do
+      begin
         ShowMessage(E.Message);
+        log(E.Message);
+      end;
     end;
   StringGrid1.EndUpdate(true);
   b_save.Enabled := true;
@@ -294,6 +335,7 @@ begin
     begin
 
       ShowMessage('File not Found: ' + filename);
+      log('File not Found: ' + filename);
       label_wait.Visible:= false;
     end;
   row.Free;
@@ -312,6 +354,8 @@ begin
   Clear_translation;
   label_wait.Visible:= true;
   Application.ProcessMessages;
+  log('start loading Destinationfile: ' + filename);
+
   if FileExists(filename) then
   begin
     StringGrid1.BeginUpdate;
@@ -366,9 +410,13 @@ begin
       end;
       CloseFile(F1);
       b_save.Enabled := true;
+      log('Destination File import successful');
     except
       on E: Exception do
-        ShowMessage(E.Message);
+        begin
+          ShowMessage(E.Message);
+          log(E.Message);
+        end;
     end;
     StringGrid1.EndUpdate(true);
   end
@@ -376,6 +424,7 @@ begin
     begin
       label_wait.Visible:= false;
       ShowMessage('File not Found: ' + filename);
+      log('File not Found: ' + filename);
     end;
   row.Free;
   label_wait.Visible:= false;
@@ -433,6 +482,7 @@ begin
   StringGrid1.EndUpdate(true);
   label_wait.Visible:= false;
   b_save.enabled := true;
+  log('merge successful: ');
 end;
 
 
@@ -491,6 +541,8 @@ begin
   finally
       //CloseFile(F1);
   end;
+
+  log('start saving Export file: ' + filename);
   //end;
   try
     AssignFile(F1,FileName);
@@ -522,9 +574,15 @@ begin
 
     end;
     CloseFile(F1);
-    // ShowMessage('Export File saved as '+ FileName);
+
+    log('Export File saved as "'+ FileName + '"');
   except
-    on E: Exception do ShowMessage(E.Message);
+    on E: Exception do
+    begin
+      ShowMessage(E.Message);
+      log(E.Message);
+    end;
+
   end;
   label_wait.Visible:= false;
 end;
@@ -550,7 +608,7 @@ begin
   finally
       //
   end;
-
+  log('start saving CSV file ' + filename);
   try
     AssignFile(F1,FileName);
     Append(F1);
@@ -572,9 +630,15 @@ begin
     end;
     CloseFile(F1);
     // only message when no parameter as Exportfile is given..
+    log('CSV File saved as '+ FileName);
     if sExportFile = '' then ShowMessage('Export File saved as '+ FileName);
   except
-    on E: Exception do ShowMessage(E.Message);
+    on E: Exception do
+    begin
+      log(E.Message);
+      if sExportFile = '' then ShowMessage(E.Message);
+    end;
+
   end;
   label_wait.Visible:= false;
 end;
@@ -598,7 +662,7 @@ var
   row: TStringList;
   i,i1: integer;
 begin
-
+  log('start CSV Import to Destination-column');
   Clear_translation;
   label_wait.Visible:= true;
   Application.ProcessMessages;
@@ -679,6 +743,7 @@ begin
     begin
       label_wait.Visible:= false;
       ShowMessage('File not Found: ' + filename);
+      log('File not Found: ' + filename);
     end;
 
   label_wait.Visible:= false;
@@ -780,7 +845,7 @@ begin
   end else ShowMessage('Please select a valid Sourcefile!');
 end;
 
-// Choose CSV-Exportfile per SafeDialog
+// Choose CSV-Importfile per OpenDialog
 procedure TMainForm.importCSV();
 begin
   If (FileExists(Edit_src.Text)) then
@@ -795,11 +860,6 @@ begin
   end else ShowMessage('Please select a valid Sourcefile!');
 end;
 
-
-procedure TMainForm.Button_saveClick(Sender: TObject);
-begin
-
-end;
 
 procedure TMainForm.B_helpClick(Sender: TObject);
 begin
@@ -967,11 +1027,14 @@ begin
       if(sExportFile <> '') then
       begin
         sourceToCSV(sExportFile);
-        Application.Terminate;
+
       end;
+    end else
+    begin
+      log('Import File not found: '+sInputFile);
     end;
-
-
+    // Always terminate theapp if parameter control
+    Application.Terminate;
   end;
 end;
 
@@ -983,23 +1046,23 @@ begin
 
   //for intI := 0 to high(filenames) do
   //  listbox1.Items.Add(filenames[intI]);
-  If not FIleExists(Edit_src.Text) then
+  If not FileExists(Edit_src.Text) then
   begin
-       Edit_src.Text := filenames[0];
-       Label_wait.Visible:= true;
-       Application.ProcessMessages;
-       load_source(Edit_src.Text);
-       Label_wait.Visible:= false;
+     Edit_src.Text := filenames[0];
+     Label_wait.Visible:= true;
+     Application.ProcessMessages;
+     load_source(Edit_src.Text);
+     Label_wait.Visible:= false;
   end else
   begin
-       If not FIleExists(Edit_dst.Text) then
-       begin
-         Edit_dst.Text := filenames[0];
-         Label_wait.Visible:= true;
-         Application.ProcessMessages;
-         Load_destination(Edit_dst.Text);
-         Label_wait.Visible:= false;
-       end;
+     If not FIleExists(Edit_dst.Text) then
+     begin
+       Edit_dst.Text := filenames[0];
+       Label_wait.Visible:= true;
+       Application.ProcessMessages;
+       Load_destination(Edit_dst.Text);
+       Label_wait.Visible:= false;
+     end;
   end;
 end;
 
@@ -1011,9 +1074,6 @@ begin
   colWidth := trunc( (StringGrid1.width - StringGrid1.ColWidths[0] - StringGrid1.ColWidths[1] - StringGrid1.ColWidths[4] ) / 2);
   StringGrid1.ColWidths[2] := colWidth;
   StringGrid1.ColWidths[3] := colWidth;
-  //StringGrid1.ColWidths[1] := MainForm.width / 4 ;
-  //StringGrid1.ColWidths[2] := MainForm.width / 4 ;
-  //StringGrid1.ColWidths[3] := MainForm.width / 4 ;
 end;
 
 procedure TMainForm.Edit_dstClick(Sender: TObject);
@@ -1101,9 +1161,6 @@ begin
   StringGrid1.EndUpdate(true);
   Label_wait.Visible:= false;
 end;
-
-
-
 
 end.
 

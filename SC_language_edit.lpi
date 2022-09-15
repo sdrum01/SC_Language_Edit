@@ -15,10 +15,13 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="1"/>
       <MinorVersionNr Value="2"/>
-      <RevisionNr Value="1"/>
-      <StringTable CompanyName="Gunnebo Markersdorf" FileDescription="Merge Tool for Safecontrol Language Files" InternalName="SC_language_edit" LegalCopyright="Dirk Hanisch Gunnebo 2016" LegalTrademarks="Gunnebo 2016 DH" OriginalFilename="SC_language_edit" ProductVersion="1.2.1"/>
+      <RevisionNr Value="3"/>
+      <BuildNr Value="1"/>
+      <Attributes pvaPreRelease="True"/>
+      <StringTable CompanyName="Gunnebo Markersdorf" FileDescription="Merge Tool for Safecontrol Language Files" InternalName="SC_language_edit" LegalCopyright="Dirk Hanisch Gunnebo 2016" LegalTrademarks="Gunnebo 2016 DH" OriginalFilename="SC_language_edit" ProductVersion="1.2.3"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="default" Default="True"/>
@@ -37,7 +40,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="3">
       <Unit0>
         <Filename Value="SC_language_edit.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -50,12 +53,18 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainUnit"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="res/writelog.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="writeLog"/>
+      </Unit2>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
+      <OtherUnitFiles Value="res"/>
       <SrcPath Value="$(LazarusDir)/lcl;$(LazarusDir)/lcl/interfaces/$(LCLWidgetType)"/>
     </SearchPaths>
     <Parsing>

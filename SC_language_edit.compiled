@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <Compiler Value="C:\Dirk\Software\Lazarus2.0\fpc\3.2.0\bin\i386-win32\fpc.exe" Date="1381340442"/>
-  <Params Value=" -MObjFPC -Scgi -O2 -Xs -XX -WG -l -vewnhibq -FuC:\Dirk\Software\Lazarus2.0\lcl\units\i386-win32\win32 -FuC:\Dirk\Software\Lazarus2.0\lcl\units\i386-win32 -FuC:\Dirk\Software\Lazarus2.0\components\lazutils\lib\i386-win32 -FuC:\Dirk\Software\Lazarus2.0\packager\units\i386-win32 -FuC:\Dirk\Data\Development\LazarusProjekte\Safecontrol_Languagefile\ -oC:\Dirk\Data\Development\LazarusProjekte\Safecontrol_Languagefile\SC_language_edit.exe -dLCL -dLCLwin32 SC_language_edit.lpr"/>
+  <Params Value=" -MObjFPC -Scgi -O2 -Xs -XX -WG -l -vewnhibq -FuC:\Dirk\Data\Development\LazarusProjekte\Safecontrol_Languagefile\res -FuC:\Dirk\Software\Lazarus2.0\lcl\units\i386-win32\win32 -FuC:\Dirk\Software\Lazarus2.0\lcl\units\i386-win32 -FuC:\Dirk\Software\Lazarus2.0\components\lazutils\lib\i386-win32 -FuC:\Dirk\Software\Lazarus2.0\packager\units\i386-win32 -FuC:\Dirk\Data\Development\LazarusProjekte\Safecontrol_Languagefile\ -oC:\Dirk\Data\Development\LazarusProjekte\Safecontrol_Languagefile\SC_language_edit.exe -dLCL -dLCLwin32 SC_language_edit.lpr"/>
 </CONFIG>
