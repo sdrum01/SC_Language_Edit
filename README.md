@@ -76,11 +76,18 @@ Its possible to Import a translated CSV File in teh same Format like the export 
 ################ HISTORY ###############
 
 V1.0.1.2
-First Release
+- First Release
 
 V 1.0.2.1
-Drag'n'Drop possible of files from filemanager
+- Drag'n'Drop possible of files from filemanager
 
 V1.2.1.0  13/09/22
-possible to Export and Import translated files from/to CSV, 
-small cleanup and bugfixes
+- possible to Export and Import translated files from/to CSV, 
+- small cleanup and bugfixes
+
+V1.2.3.0
+- Parameter 
+    if=<IMPORTFILE.lng>
+    ef=<EXPORTFILE.csv>
+  will convert the languagefile per commandline and save it to exportfilename
+- Logfile will be written
