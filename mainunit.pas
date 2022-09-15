@@ -107,7 +107,7 @@ type
 
 var
   MainForm: TMainForm;
-  key_languagefile_dst, lastExportFileName : string;
+  key_languagefile_dst, lastExportFileName, sInputFile, sExportFile : string;
 
   //arr_lines : array of integer;
 
@@ -571,7 +571,8 @@ begin
       end;
     end;
     CloseFile(F1);
-    ShowMessage('Export File saved as '+ FileName);
+    // only message when no parameter as Exportfile is given..
+    if sExportFile = '' then ShowMessage('Export File saved as '+ FileName);
   except
     on E: Exception do ShowMessage(E.Message);
   end;
@@ -932,9 +933,46 @@ begin
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var i : integer;
+    s,s1,s2 : string;
+    param : TStringList;
 begin
   key_languagefile_dst := '';
   lastExportFileName := '';
+  sInputFile := '';
+  sExportFile := '';
+  for i := 1 to ParamCount do
+  begin
+    s := ParamStr(i);
+    // splitting each parameter in 2 parts to parse
+    if (Pos('=',s) > 0) then
+    begin
+      param := TStringList.Create;
+      param := Split('=', s);
+      // InputFile
+      if(param[0] = 'if') and (param.count > 1)  then sInputFile := param[1];
+      // ExportFile
+      if((param[0] = 'ef') and (param.Count > 1)) then sExportFile := param[1];
+      param.Free;
+    end;
+  end;
+
+  if(sInputFile <> '') then
+  begin
+    // try out to search the file relative when its not found
+    if not fileExists(sInputFile) then sInputFile := extractFilePath(application.ExeName)+sInputFile;
+    if fileExists(sInputFile) then
+    begin
+      load_source(sInputFile);
+      if(sExportFile <> '') then
+      begin
+        sourceToCSV(sExportFile);
+        Application.Terminate;
+      end;
+    end;
+
+
+  end;
 end;
 
 procedure TMainForm.FormDropFiles(Sender: TObject; const FileNames: array of String

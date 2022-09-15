@@ -1,5 +1,7 @@
 *.xlsx
 *.xls
+*.csv
+*.lng
 *.exe
 *.dcu
 *.~pas
