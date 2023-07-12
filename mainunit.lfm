@@ -1,13 +1,13 @@
 object MainForm: TMainForm
-  Left = 1811
-  Height = 800
-  Top = 134
-  Width = 1280
+  Left = 299
+  Height = 600
+  Top = 155
+  Width = 1000
   AllowDropFiles = True
   Caption = 'SafeControl Language Translation Helper'
-  ClientHeight = 780
-  ClientWidth = 1280
-  Constraints.MinWidth = 1200
+  ClientHeight = 580
+  ClientWidth = 1000
+  Constraints.MinWidth = 1000
   Menu = MainMenu1
   OnCreate = FormCreate
   OnDropFiles = FormDropFiles
@@ -25,9 +25,9 @@ object MainForm: TMainForm
   end
   object StringGrid1: TStringGrid
     Left = 5
-    Height = 696
+    Height = 500
     Top = 48
-    Width = 1267
+    Width = 987
     Anchors = [akTop, akLeft, akRight]
     AutoAdvance = aaDown
     Columns = <    
@@ -97,7 +97,7 @@ object MainForm: TMainForm
   end
   object Edit_search: TEdit
     AnchorSideRight.Side = asrBottom
-    Left = 864
+    Left = 584
     Height = 23
     Top = 20
     Width = 152
@@ -109,8 +109,8 @@ object MainForm: TMainForm
   object Label_wait: TStaticText
     Left = 0
     Height = 86
-    Top = 694
-    Width = 1280
+    Top = 494
+    Width = 1000
     Align = alBottom
     Alignment = taCenter
     Caption = 'Please Wait...'
@@ -125,7 +125,7 @@ object MainForm: TMainForm
   end
   object CB_empty: TCheckBox
     AnchorSideRight.Side = asrBottom
-    Left = 864
+    Left = 584
     Height = 19
     Top = 0
     Width = 163
@@ -136,7 +136,7 @@ object MainForm: TMainForm
   end
   object b_search: TBitBtn
     AnchorSideRight.Side = asrBottom
-    Left = 1024
+    Left = 744
     Height = 30
     Top = 15
     Width = 75
@@ -183,7 +183,7 @@ object MainForm: TMainForm
   end
   object b_save: TBitBtn
     AnchorSideRight.Side = asrBottom
-    Left = 1136
+    Left = 856
     Height = 30
     Top = 15
     Width = 136

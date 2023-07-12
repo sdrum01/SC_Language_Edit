@@ -41,9 +41,10 @@ Die Datei wird im Format der zu übersetzenden Datei gespeichert (das UTF-8 oder
 Es gibt die Möglichkeit, eine CSV aus der Queldatei zu exportieren mit Menu "File > Export Sourcefile to CSV" und 
 eine übersetzte CSV Datei im selben Format zu importieren mit Menu "File > Import CSV to Destination"
 
-##########################################################################################
+#######################################################################################
 
 English:
+
 The tool is a small translation helper with merge functionality.
 By clicking on the top input fields the complete source-file (basic in English) will load.
 During loading of the translatable target file (destination) the Key's and Subkey's will be assigned on the correct position.

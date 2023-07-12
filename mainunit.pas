@@ -1069,7 +1069,7 @@ end;
 procedure TMainForm.FormResize(Sender: TObject);
 var colWidth:integer;
 begin
-  StringGrid1.Height:= MainForm.Height - 55;
+  StringGrid1.Height:= MainForm.Height - 80;
   StringGrid1.Width:= MainForm.width - 15;
   colWidth := trunc( (StringGrid1.width - StringGrid1.ColWidths[0] - StringGrid1.ColWidths[1] - StringGrid1.ColWidths[4] ) / 2);
   StringGrid1.ColWidths[2] := colWidth;
