@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 299
+  Left = 466
   Height = 600
-  Top = 155
+  Top = 179
   Width = 1000
   AllowDropFiles = True
   Caption = 'SafeControl Language Translation Helper'
@@ -275,7 +275,7 @@ object MainForm: TMainForm
     TabOrder = 8
   end
   object OpenDialog1: TOpenDialog
-    Filter = 'Safecontrol-language files|*.lng|all files|*.*'
+    Filter = 'SCM files|*.lng|SC10 files eng|*.eng|SC10 files ger|*.ger|all files|*.*'
     Left = 267
     Top = 216
   end

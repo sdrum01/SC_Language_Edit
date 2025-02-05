@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, Grids, Menus, Buttons, types;
+  StdCtrls, Grids, Menus, Buttons, types, Inifiles;
 
 type
 
@@ -94,8 +94,8 @@ type
     procedure StringGrid1KeyPress(Sender: TObject; var Key: char);
     procedure StringGrid1MouseWheel(Sender: TObject; Shift: TShiftState;
       WheelDelta: Integer; MousePos: TPoint; var Handled: Boolean);
-
-
+    function Ini_Read(section: string; key: string): string;
+    procedure Ini_Write(section: string; key: string; Value: string);
 
   private
     { private declarations }
@@ -107,7 +107,7 @@ type
 
 var
   MainForm: TMainForm;
-  key_languagefile_dst, lastExportFileName, sInputFile, sExportFile : string;
+  key_languagefile_dst, lastExportFileName, sInputFile, sExportFile, ini_file : string;
 
   //arr_lines : array of integer;
 
@@ -121,7 +121,9 @@ implementation
 uses
   resource, versiontypes, versionresource;
 
- FUNCTION resourceVersionInfo: STRING;
+
+
+function resourceVersionInfo: STRING;
 
  (* Unlike most of AboutText (below), this takes significant activity at run-    *)
  (* time to extract version/release/build numbers from resource information      *)
@@ -162,6 +164,8 @@ uses
    EXCEPT
    END
  END { resourceVersionInfo } ;
+
+
 
 function Split(Delimiter: char; Str: string): TStringList;
 var
@@ -239,7 +243,40 @@ begin
  end;
 end;
 
+
+
+
+
 { TMainForm }
+
+function TMainForm.Ini_Read(section: string; key: string): string;
+var
+  IniDat: TIniFile; // Initialisierungsdatei
+  s: string;
+begin
+  s := '';
+  // Datei öffnen und erstellen
+  IniDat := TIniFile.Create(Ini_File);
+  with IniDat do
+  begin
+    s := ReadString(section, key, s);
+  end;
+  IniDat.Free;
+  Result := s;
+end;
+
+procedure TMainForm.Ini_Write(section: string; key: string; Value: string);
+var
+  IniDat: TIniFile; // Initialisierungsdatei
+begin
+  // Datei öffnen und erstellen
+  IniDat := TIniFile.Create(Ini_File);
+  with IniDat do
+  begin
+    WriteString(section, key, Value);
+  end;
+  IniDat.Free;
+end;
 
 // common log call
 procedure TMainForm.log(s:string);
@@ -442,7 +479,7 @@ end;
 
 procedure TMainForm.MenuHelp_aboutClick(Sender: TObject);
 begin
-  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2022 (D.H.)');
+  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2025 (D.H.)');
 end;
 
 procedure TMainForm.MenuFile_SaveDstClick(Sender: TObject);
@@ -863,7 +900,7 @@ end;
 
 procedure TMainForm.B_helpClick(Sender: TObject);
 begin
-  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2022 (D.H.)');
+  ShowMessage('Safecontrol Language Edit '+ #10#13 +resourceVersionInfo+ #10#13 + 'Gunnebo Markersdorf 2025 (D.H.)');
 end;
 
 procedure TMainForm.b_mergeClick(Sender: TObject);
@@ -983,11 +1020,12 @@ procedure TMainForm.chooseSource();
 begin
  Label_wait.Visible:= true;
   Application.ProcessMessages;
-  OpenDialog1.Filter := 'Safecontrol-language files|*.lng|all files|*.*';
+  OpenDialog1.Filter := 'SCM files|*.lng|SC10 files eng|*.eng|SC10 files ger|*.ger|all files|*.*';
   If OpenDialog1.Execute then
   begin
     Edit_src.Text:= OpenDialog1.FileName;
     load_source(Edit_src.Text);
+    ini_write('files', 'source', Edit_src.Text);
   end;
   Label_wait.Visible:= false;
 end;
@@ -997,9 +1035,20 @@ var i : integer;
     s,s1,s2 : string;
     param : TStringList;
 begin
+
+  ini_file := ExtractFileDir(Application.ExeName) + '\config.ini';
+
+  if not fileexists(Ini_File) then
+  begin
+    ini_write('files', 'source', 'SBTexteUTF8.eng');
+  end;
+
   key_languagefile_dst := '';
   lastExportFileName := '';
-  sInputFile := '';
+
+  sInputFile := ini_read('files', 'source');
+
+  //sInputFile := '';
   sExportFile := '';
   for i := 1 to ParamCount do
   begin
@@ -1023,6 +1072,7 @@ begin
     if not fileExists(sInputFile) then sInputFile := extractFilePath(application.ExeName)+sInputFile;
     if fileExists(sInputFile) then
     begin
+      Edit_src.Text:=sInputFile;
       load_source(sInputFile);
       if(sExportFile <> '') then
       begin
@@ -1033,10 +1083,11 @@ begin
     begin
       log('Import File not found: '+sInputFile);
     end;
-    // Always terminate theapp if parameter control
-    Application.Terminate;
+    // Always terminate app if parameter control
+    if (ParamCount > 0) then Application.Terminate;
   end;
 end;
+
 
 procedure TMainForm.FormDropFiles(Sender: TObject; const FileNames: array of String
   );
@@ -1052,6 +1103,7 @@ begin
      Label_wait.Visible:= true;
      Application.ProcessMessages;
      load_source(Edit_src.Text);
+     ini_write('files', 'source', Edit_src.Text);
      Label_wait.Visible:= false;
   end else
   begin
