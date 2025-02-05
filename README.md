@@ -1,12 +1,12 @@
-# SCLanguageEdit
+$ SCLanguageEdit
 Helper for Translation Safecontrol Files
 
-#########################################################
-##  Translation Helper for Safecontrol Language Files  ##
-##                                                     ##
-##                  Gunnebo Markersdorf                ##
-##  11:28 08.03.2016                                   ##
-#########################################################
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+$$  Translation Helper for Safecontrol Language Files  $$
+$$                                                     $$
+$$                  Gunnebo Markersdorf                $$
+$$  11:28 08.03.2016                                   $$
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 Deutsch:
 
@@ -41,7 +41,7 @@ Die Datei wird im Format der zu übersetzenden Datei gespeichert (das UTF-8 oder
 Es gibt die Möglichkeit, eine CSV aus der Queldatei zu exportieren mit Menu "File > Export Sourcefile to CSV" und 
 eine übersetzte CSV Datei im selben Format zu importieren mit Menu "File > Import CSV to Destination"
 
-#######################################################################################
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 English:
 
@@ -74,7 +74,7 @@ Its possible to Export the Sourcefile as CSV File via Menu "File > Export Source
 Its possible to Import a translated CSV File in teh same Format like the export CSV via Menu "File > Import CSV to Destination"
 
 
-################ HISTORY ###############
+$$$$$$$$$$$$$$$$ HISTORY $$$$$$$$$$$$$$$
 
 V1.0.1.2
 - First Release
@@ -92,3 +92,7 @@ V1.2.3.0
     ef=<EXPORTFILE.csv>
   will convert the languagefile per commandline and save it to exportfilename
 - Logfile will be written
+
+V1.2.5.0
+- Inifile to remember Source-File
+   the ini-file is located on the rootfolder

@@ -69,3 +69,5 @@ V1.0.1.2
 Erstes Release
 V 1.0.2.1
 Drag'n'Drop von FIles möglich aus einem Dateimanager
+V 1.0.2.5
+IniFile to remember Source
